@@ -1,0 +1,45 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ book.title }}
+{% endblock title %}
+{% block content %}
+    <div class="book-detail">
+        {% if book.cover %}<img src="{{ book.cover.url }}" alt="">{% endif %}
+        <h2>
+            <a href="">{{ book.title }}</a>
+        </h2>
+        <p>Author: {{ book.author }}</p>
+        <p>Price: {{ book.price }}</p>
+        <div>
+            <h3>Reviews</h3>
+            <ul id="reviews-list">
+                {% for review in book.reviews.all %}
+                    <li id="review-{{ review.id }}">
+                        {{ review.review }} ({{ review.author }})
+                        {% if user == review.author %}
+                            <button class="btn btn-danger"
+                                    hx-delete="{% url 'review_delete' review_id=review.id %}"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-target="#review-{{ review.id }}"
+                                    hx-swap="outerHTML">Delete</button>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>Add a review</h3>
+            <form id="review-form"
+                  method="post"
+                  hx-post="{{ book.get_absolute_url }}"
+                  hx-target="#reviews-list"
+                  hx-swap="beforeend">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-success" type="submit">Submit Review</button>
+            </form>
+        </div>
+    </div>
+    <script>htmx.logAll();  // Enables detailed HTMX logs in the console</script>
+{% endblock content %}

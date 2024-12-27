@@ -189,10 +189,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # use s3 not in development but in production
 # # AWS configuration
-#
-# AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID")
-# AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY")
-#
+
+AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY")
+
 # # AWS storage configuration for amazon s3
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME

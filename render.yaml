@@ -4,7 +4,10 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
-    dockerCommand: gunicorn django_project.wsgi:application --bind 0.0.0.0:$PORT
+    buildCommand: echo "Building..."
+    startCommand: >
+      sh -c "python manage.py collectstatic --noinput &&
+             gunicorn django_project.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DJANGO_DEBUG
         value: false

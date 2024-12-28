@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: django-bookstore
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerCommand: gunicorn django_project.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_DEBUG
+        value: false
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_STORAGE_BUCKET_NAME
+        sync: false
+      - key: SECURE_SSL_REDIRECT
+        value: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: django-bookstore-db
+          property: connectionString
+    healthCheckPath: /
+    
+databases:
+  - name: django-bookstore-db
+    plan: free
